@@ -1,4 +1,9 @@
-document.addEventListener('DOMContentLoaded', function () {
+(function () {
   var elems = document.querySelectorAll('.date');
-  M.Datepicker.init(elems);
-});
+  var options = {
+    autoClose: true,
+    firstDay: 1,
+    format: 'dd/mm/yyyy'
+  }
+  M.Datepicker.init(elems, options);
+})();
