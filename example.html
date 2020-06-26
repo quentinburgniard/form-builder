@@ -10,6 +10,8 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <!-- Load Form Builder -->
   <script defer src="form-builder-1.0.0.js"></script>
+  <!-- Optional: Add PWA manifest for online backup -->
+  <link rel="manifest" href="manifest.json">
   <!--<script async src="https://raw.githubusercontent.com/quentinburgniard/form-builder/master/form-builder-1.0.0.js"></script>-->
 </head>
 
@@ -19,10 +21,14 @@
     var formBuilder = formBuilder || {};
     formBuilder.debug = true;
     formBuilder.config = {
-      formName: 'CV 1.0.0',
+      form: {
+        name: 'CV',
+        version: '1.0.0',
+      },
       plugins: [
         'date',
-        'image'
+        'image',
+        'local-backup'
       ],
       fields: [
         {
@@ -93,11 +99,11 @@
     <div class="row">
       <div class="col s12 m10 l7 xl6">
         <!-- Add From Builder wrapper -->
-        <form id="form-builder" action="https://cv.digitalleman.com"></form>
+        <form id="form-builder" action="https://digitalleman.com"></form>
       </div>
     </div>
   </div>
-  <div class="fixed-action-btn">
+  <!--<div class="fixed-action-btn">
     <a class="btn-floating btn-large red">
       <i class="large material-icons">mode_edit</i>
     </a>
@@ -107,7 +113,7 @@
       <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
       <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
     </ul>
-  </div>
+  </div>-->
   <!-- Optional: Add Form Builder status icon -->
   <div id='form-builder-status'></div>
   <!-- Optional: Add Form Builder preview window -->

@@ -1,0 +1,15 @@
+{
+  "background_color": "red",
+  "categories": ["CV", "Builder", "Générateur", "Formulaire"],
+  "name": "CV Builder",
+  "description": "Créer facilement de magnifique CV",
+  "display": "standalone",
+  "lang": "fr-FR",
+  "orientation": "portrait-primary",
+  "serviceworker": {
+    "src": "serviceworker.js"
+  },
+  "short_name": "CV Builder",
+  "start_url": "https://cv.digitalleman.com",
+  "theme_color": "blue"
+}
