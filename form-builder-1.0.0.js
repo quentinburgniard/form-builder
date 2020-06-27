@@ -87,7 +87,6 @@
     
     dom.form = document.querySelector('#form-builder');
     dom.form.innerHTML = '';
-    dom.form.addEventListener('submit', submitForm);
 
     var fields = formBuilder.config.fields || [];
     fields.forEach(function (field, id) {
