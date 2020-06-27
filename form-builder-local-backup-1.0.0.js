@@ -10,7 +10,7 @@
   }
 
   var fields = localStorage.getItem('form-builder-' + formName)
-  formBuilder.setFields(JSON.parse(fields));
+  if (fields) formBuilder.setFields(JSON.parse(fields));
   M.updateTextFields();
   formBuilder.dom.form.addEventListener('submit', save);
   formBuilder.dom.fields.forEach(field => field.addEventListener('change', save));

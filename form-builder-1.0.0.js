@@ -4,7 +4,7 @@
   formBuilder.version = '1.0.0';
   formBuilder.debug = formBuilder.debug || false;
 
-  var addField = function (id, fieldName = '', fieldType, options = []) {
+  var addField = function (fieldName = '', fieldType, options = []) {
     var div = document.createElement('div');
     div.className = 'input-field';
     var field, label;
@@ -25,10 +25,12 @@
         break;
       case 'select':
         field = document.createElement('select');
-        options.forEach(function (optionName, optionID) {
+        options.forEach(function (optionName, i) {
           option = document.createElement('option');
-          if (optionID == 0) option.setAttribute('selected', '');
-          option.value = optionID;
+          if (i == 0) option.setAttribute('selected', '');
+          option.value = optionName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          option.value = option.value.toLowerCase();
+          option.value = option.value.replace(/\s*/g, '');
           option.innerText = optionName;
           field.appendChild(option);
         });
@@ -39,11 +41,12 @@
         break;
     }
 
-    field.name = id;
+    field.id = fieldName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    field.id  = field.id.toLowerCase();
+    field.id  = field.id.replace(/\s*/g, '');
     field.classList.add('form-builder-fields', 'validate');
-    field.id = 'f' + id;
     label = document.createElement('label');
-    label.setAttribute('for', 'f' + id);
+    label.setAttribute('for', field.id);
     label.innerText = fieldName;
     div.appendChild(field);
     div.appendChild(label);
@@ -69,8 +72,8 @@
     event.preventDefault();
     dom.submit.classList.add('disabled');
 
-    var form  = document.createElement('form');
-    form  = document.createElement('form');
+    var form = document.createElement('form');
+    form = document.createElement('form');
     form.action = dom.form.action;
     form.method = 'post';
     var field = document.createElement('input');
@@ -84,13 +87,13 @@
 
   var init = function () {
     log('Initialisation');
-    
+
     dom.form = document.querySelector('#form-builder');
     dom.form.innerHTML = '';
 
     var fields = formBuilder.config.fields || [];
-    fields.forEach(function (field, id) {
-      addField(id, field.name, field.type, field.options);
+    fields.forEach(function (field) {
+      addField(field.name, field.type, field.options);
     });
     dom.fields = dom.form.querySelectorAll('.form-builder-fields');
 
@@ -106,24 +109,22 @@
     }
   }
 
-
   var getFields = function () {
-    dom.fields.forEach(function(field, index) {
-      formBuilder.config.fields[index].value = field.value;
+    var fields = {};
+    dom.fields.forEach(function (field) {
+      fields[field.id] = field.value;
     });
-    return formBuilder.config.fields;
+    return fields;
   }
 
   var setFields = function (fields) {
-    if (fields.length == dom.fields.length) {
-      fields.forEach(function(field, index) {
-        dom.fields[index].value = field.value;
-      });
-    }
+    dom.fields.forEach(function (field) {
+      field.value = fields[field.id] || '';
+    });
   }
 
   var submitForm = function () {
-    var form  = document.createElement('form');
+    var form = document.createElement('form');
     form.action = dom.form.action;
     form.method = 'post';
     var field = document.createElement('input');
