@@ -51,9 +51,9 @@
   }
 
   var dynamicLoading = function () {
-    var prefix = 'file:///home/quentin/form-builder/form-builder-';
-    //var prefix = 'https://raw.githubusercontent.com/quentinburgniard/form-builder/master/form-builder-';
+    var prefix = '../form-builder-';
     var plugins = formBuilder.config.plugins || [];
+    if (document.querySelector('#form-builder-action')) plugins.push('action');
     //if (!localStorage.getItem('form-builder-discovery')) plugins.push('discovery');
     if (document.querySelector('#form-builder-preview')) plugins.push('preview');
     plugins.forEach(function (plugin) {
