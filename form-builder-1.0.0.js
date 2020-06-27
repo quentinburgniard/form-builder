@@ -66,12 +66,29 @@
     });
   }
 
+  var submitForm = function (event) {
+    event.preventDefault();
+    dom.submit.classList.add('disabled');
+
+    var form  = document.createElement('form');
+    form  = document.createElement('form');
+    form.action = dom.form.action;
+    form.method = 'post';
+    var field = document.createElement('input');
+    field.name = 'fields';
+    field.value = JSON.stringify(getFields());
+    form.appendChild(field);
+    form.style.display = 'none';
+    document.body.appendChild(form);
+    form.submit();
+  }
+
   var init = function () {
     log('Initialisation');
     
     dom.form = document.querySelector('#form-builder');
     dom.form.innerHTML = '';
-    dom.form.addEventListener('submit', submit(event));
+    dom.form.addEventListener('submit', submitForm);
 
     var fields = formBuilder.config.fields || [];
     fields.forEach(function (field, id) {
@@ -107,7 +124,15 @@
     return formBuilder.config.fields;
   }
 
-  var submit = function (event) {
+  var setFields = function (fields) {
+    if (fields.length == dom.fields.length) {
+      fields.forEach(function(field, index) {
+        dom.fields[index].value = field.value;
+      });
+    }
+  }
+
+  var submitForm = function (event) {
     event.preventDefault();
     dom.submit.classList.add('disabled');
 
@@ -126,6 +151,7 @@
 
   formBuilder.dom = dom;
   formBuilder.getFields = getFields;
+  formBuilder.setFields = setFields;
   formBuilder.log = log;
 
   init();
