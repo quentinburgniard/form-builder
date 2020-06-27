@@ -56,7 +56,6 @@
     var plugins = formBuilder.config.plugins || [];
     //if (!localStorage.getItem('form-builder-discovery')) plugins.push('discovery');
     if (document.querySelector('#form-builder-preview')) plugins.push('preview');
-    if (document.querySelector('#form-builder-status')) plugins.push('status');
     plugins.forEach(function (plugin) {
       log('Load dynamically ' + plugin);
       var script = document.createElement('script');
@@ -95,14 +94,6 @@
       addField(id, field.name, field.type, field.options);
     });
     dom.fields = dom.form.querySelectorAll('.form-builder-fields');
-    
-    var submit = document.createElement('input');
-    dom.submit = submit;
-    submit.className = 'btn right';
-    submit.id = 'form-builder-submit';
-    submit.type = 'submit';
-    submit.value = 'Lancer';
-    dom.form.appendChild(submit);
 
     dynamicLoading();
 
@@ -132,12 +123,8 @@
     }
   }
 
-  var submitForm = function (event) {
-    event.preventDefault();
-    dom.submit.classList.add('disabled');
-
+  var submitForm = function () {
     var form  = document.createElement('form');
-    form  = document.createElement('form');
     form.action = dom.form.action;
     form.method = 'post';
     var field = document.createElement('input');
@@ -152,6 +139,7 @@
   formBuilder.dom = dom;
   formBuilder.getFields = getFields;
   formBuilder.setFields = setFields;
+  formBuilder.submitForm = submitForm;
   formBuilder.log = log;
 
   init();
