@@ -4,10 +4,18 @@
   formBuilder.version = '1.0.0';
   formBuilder.debug = formBuilder.debug || false;
 
-  var addField = function (fieldName = '', fieldType, options = []) {
-    var div = document.createElement('div');
-    div.className = 'input-field';
-    var field, label;
+  var getField = function (field) {
+    var fieldID = field.id || getID(field.name)
+    var fieldName = field.name || '';
+    var fields = field.fields || [];
+    var fieldType = field.type || '';
+    var max = field.max || 0;
+    var options = field.options || [];
+    var htmlWrapper, htmlField, htmlLabel;
+    if (fieldType !== 'collection') {
+      htmlWrapper = document.createElement('div');
+      htmlWrapper.className = 'input-field';
+    }
 
     switch (fieldType) {
       case 'email':
@@ -15,16 +23,16 @@
       case 'tel':
       case 'url':
       case 'text':
-        field = document.createElement('input');
-        field.type = fieldType;
+        htmlField = document.createElement('input');
+        htmlField.type = fieldType;
         break;
       case 'date':
-        field = document.createElement('input');
-        field.className = fieldType;
-        field.type = 'text';
+        htmlField = document.createElement('input');
+        htmlField.className = fieldType;
+        htmlField.type = 'text';
         break;
       case 'select':
-        field = document.createElement('select');
+        htmlField = document.createElement('select');
         options.forEach(function (optionName, i) {
           option = document.createElement('option');
           if (i == 0) option.setAttribute('selected', '');
@@ -32,25 +40,42 @@
           option.value = option.value.toLowerCase();
           option.value = option.value.replace(/\s*/g, '');
           option.innerText = optionName;
-          field.appendChild(option);
+          htmlField.appendChild(option);
         });
         break;
       case 'textarea':
-        field = document.createElement('textarea');
-        field.className = 'materialize-textarea';
+        htmlField = document.createElement('textarea');
+        htmlField.className = 'materialize-textarea';
+        break;
+      case 'collection':
+        htmlWrapper = document.createElement('div');
+        htmlWrapper.id = fieldID;
+        for (i = 0; i < max; i++) {
+          var htmlCollection = document.createElement('div');
+          htmlCollection.className = 'form-builder-collection';
+          fields.forEach(function (collectionField) {
+            var newCollectionField = {};
+            newCollectionField.id = fieldID + '-' + i + '-' + getID(collectionField.name);
+            newCollectionField.name = fieldName + ' - ' + collectionField.name;
+            newCollectionField.type = collectionField.type;
+            htmlCollection.appendChild(getField(newCollectionField));
+          });
+          htmlWrapper.appendChild(htmlCollection);
+        }
         break;
     }
-
-    field.id = fieldName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    field.id  = field.id.toLowerCase();
-    field.id  = field.id.replace(/\s*/g, '');
-    field.classList.add('form-builder-fields', 'validate');
-    label = document.createElement('label');
-    label.setAttribute('for', field.id);
-    label.innerText = fieldName;
-    div.appendChild(field);
-    div.appendChild(label);
-    if (field && label) dom.form.appendChild(div);
+    if (fieldType && fieldType !== 'collection') {
+      htmlField.id = fieldID;
+      htmlField.classList.add('form-builder-fields', 'validate');
+      htmlLabel = document.createElement('label');
+      htmlLabel.setAttribute('for', fieldID);
+      htmlLabel.innerText = fieldName;
+      if (htmlField && htmlLabel) {
+        htmlWrapper.appendChild(htmlField);
+        htmlWrapper.appendChild(htmlLabel);
+      }
+    }
+    return htmlWrapper;
   }
 
   var dynamicLoading = function () {
@@ -68,23 +93,6 @@
     });
   }
 
-  var submitForm = function (event) {
-    event.preventDefault();
-    dom.submit.classList.add('disabled');
-
-    var form = document.createElement('form');
-    form = document.createElement('form');
-    form.action = dom.form.action;
-    form.method = 'post';
-    var field = document.createElement('input');
-    field.name = 'fields';
-    field.value = JSON.stringify(getFields());
-    form.appendChild(field);
-    form.style.display = 'none';
-    document.body.appendChild(form);
-    form.submit();
-  }
-
   var init = function () {
     log('Initialisation');
 
@@ -93,8 +101,9 @@
 
     var fields = formBuilder.config.fields || [];
     fields.forEach(function (field) {
-      addField(field.name, field.type, field.options);
+      dom.form.appendChild(getField(field));
     });
+
     dom.fields = dom.form.querySelectorAll('.form-builder-fields');
 
     dynamicLoading();
@@ -109,17 +118,38 @@
     }
   }
 
+  var getID = function (fieldName) {
+    var id = fieldName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    id = id.toLowerCase();
+    id = id.replace(/\s*/g, '');
+    return id;
+  }
+
   var getFields = function () {
     var fields = {};
     dom.fields.forEach(function (field) {
-      fields[field.id] = field.value;
+      var IDs = field.id.split('-');
+      if (IDs.length == 1) {
+        fields[IDs[0]] = field.value;
+      }
+      if (IDs.length == 3) {
+        fields[IDs[0]] = fields[IDs[0]] || [];
+        fields[IDs[0]][IDs[1]] = fields[IDs[0]][IDs[1]] || {};
+        fields[IDs[0]][IDs[1]][IDs[2]] = field.value;
+      }
     });
     return fields;
   }
 
   var setFields = function (fields) {
     dom.fields.forEach(function (field) {
-      field.value = fields[field.id] || '';
+      var IDs = field.id.split('-');
+      if (IDs.length == 1) {
+        field.value = fields[IDs[0]] || '';
+      }
+      if (IDs.length == 3) {
+        field.value = fields[IDs[0]][IDs[1]][IDs[2]] || '';
+      }
     });
   }
 
@@ -127,11 +157,8 @@
     var form = document.createElement('form');
     form.action = dom.form.action;
     form.method = 'post';
-    var field = document.createElement('input');
-    field.name = 'fields';
-    field.value = JSON.stringify(getFields());
-    form.appendChild(field);
     form.style.display = 'none';
+    form.innerHTML = '<input name="fields" value="' + JSON.stringify(getFields()) + '"';
     document.body.appendChild(form);
     form.submit();
   }
