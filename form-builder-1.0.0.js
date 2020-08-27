@@ -9,44 +9,16 @@
     var fieldName = field.name || '';
     var fields = field.fields || [];
     var fieldType = field.type || '';
+    var htmlField;
+    var htmlLabel = document.createElement('label');
+    htmlLabel.setAttribute('for', fieldID);
+    htmlLabel.innerText = fieldName;
+    var htmlWrapper = document.createElement('div');
+    htmlWrapper.className = 'input-field';
     var max = field.max || 0;
     var options = field.options || [];
-    var htmlWrapper, htmlField, htmlLabel;
-    if (fieldType !== 'collection') {
-      htmlWrapper = document.createElement('div');
-      htmlWrapper.className = 'input-field';
-    }
 
     switch (fieldType) {
-      case 'email':
-      case 'number':
-      case 'tel':
-      case 'url':
-      case 'text':
-        htmlField = document.createElement('input');
-        htmlField.type = fieldType;
-        break;
-      case 'date':
-        htmlField = document.createElement('input');
-        htmlField.className = fieldType;
-        htmlField.type = 'text';
-        break;
-      case 'select':
-        htmlField = document.createElement('select');
-        options.forEach(function (optionName, i) {
-          option = document.createElement('option');
-          if (i == 0) option.setAttribute('selected', '');
-          option.value = optionName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          option.value = option.value.toLowerCase();
-          option.value = option.value.replace(/\s*/g, '');
-          option.innerText = optionName;
-          htmlField.appendChild(option);
-        });
-        break;
-      case 'textarea':
-        htmlField = document.createElement('textarea');
-        htmlField.className = 'materialize-textarea';
-        break;
       case 'collection':
         htmlWrapper = document.createElement('div');
         htmlWrapper.id = fieldID;
@@ -63,13 +35,58 @@
           htmlWrapper.appendChild(htmlCollection);
         }
         break;
+      case 'date':
+        htmlField = document.createElement('input');
+        htmlField.className = fieldType;
+        htmlField.type = 'text';
+        break;
+      case 'email':
+      case 'number':
+      case 'tel':
+      case 'url':
+      case 'img':
+        htmlField = document.createElement('input');
+        htmlField.className = 'form-builder-image';
+        htmlField.setAttribute('data-id', fieldID);
+        htmlField.type = 'file';
+        htmlLabel = document.createElement('div');
+        htmlLabel.className = 'btn';
+        htmlWrapper.classList.add('file-field');
+        var span = document.createElement('span');
+        span.innerHTML = fieldName;
+        htmlLabel.appendChild(span);
+        htmlLabel.appendChild(htmlField);
+        htmlWrapper.appendChild(htmlLabel);
+        htmlWrapper.innerHTML += '<div class="file-path-wrapper"><input class="file-path" style="color: rgba(0, 0, 0, 0)" type="text"></div>';
+        var htmlHiddenField = document.createElement('input');
+        htmlHiddenField.className = 'form-builder-fields';
+        htmlHiddenField.id = fieldID;
+        htmlHiddenField.style.display = 'none';
+        dom.form.appendChild(htmlHiddenField);
+        break;
+      case 'pagination':
+        break;
+      case 'select':
+        htmlField = document.createElement('select');
+        options.forEach(function (optionName, i) {
+          option = document.createElement('option');
+          if (i == 0) option.setAttribute('selected', '');
+          option.value = getID(optionName);
+          option.innerText = optionName;
+          htmlField.appendChild(option);
+        });
+      case 'text':
+        htmlField = document.createElement('input');
+        htmlField.type = fieldType;
+        break;
+      case 'textarea':
+        htmlField = document.createElement('textarea');
+        htmlField.className = 'materialize-textarea';
+        break;
     }
-    if (fieldType && fieldType !== 'collection') {
+    if (fieldType && !/collection|img|pagination/.test(fieldType)) {
       htmlField.id = fieldID;
       htmlField.classList.add('form-builder-fields', 'validate');
-      htmlLabel = document.createElement('label');
-      htmlLabel.setAttribute('for', fieldID);
-      htmlLabel.innerText = fieldName;
       if (htmlField && htmlLabel) {
         htmlWrapper.appendChild(htmlField);
         htmlWrapper.appendChild(htmlLabel);
@@ -98,7 +115,6 @@
 
     dom.form = document.querySelector('#form-builder');
     dom.form.innerHTML = '';
-
     var fields = formBuilder.config.fields || [];
     fields.forEach(function (field) {
       dom.form.appendChild(getField(field));

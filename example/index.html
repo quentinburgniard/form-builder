@@ -31,6 +31,10 @@
       ],
       fields: [
         {
+          name: 'Identité',
+          type: 'pagination'
+        },
+        {
           name: 'Prénom',
           type: 'text'
         },
@@ -60,11 +64,15 @@
         },
         {
           name: 'Image',
-          type: 'url'
+          type: 'img'
         },
         {
           name: 'Intitulé du poste',
           type: 'text'
+        },
+        {
+          name: 'Expériences',
+          type: 'pagination'
         },
         {
           name: 'Expériences',
@@ -87,19 +95,83 @@
         },
         {
           name: 'Formations',
-          type: 'text'
+          type: 'pagination'
+        },
+        {
+          name: 'Formations',
+          type: 'collection',
+          max: 3,
+          fields: [
+            {
+              name: 'Intitulé',
+              type: 'text'
+            },
+            {
+              name: 'Date',
+              type: 'text'
+            },
+            {
+              name: 'Description',
+              type: 'textarea'
+            }
+          ]
         },
         {
           name: 'Divers',
-          type: 'text'
+          type: 'pagination'
+        },
+        {
+          name: 'Divers',
+          type: 'collection',
+          max: 3,
+          fields: [
+            {
+              name: 'Intitulé',
+              type: 'text'
+            },
+            {
+              name: 'Date',
+              type: 'text'
+            },
+            {
+              name: 'Description',
+              type: 'textarea'
+            }
+          ]
+        },
+        {
+          name: 'Compétences & Intérêts',
+          type: 'pagination'
         },
         {
           name: 'Compétences',
-          type: 'text'
+          type: 'collection',
+          max: 3,
+          fields: [
+            {
+              name: 'Intitulé',
+              type: 'text'
+            },
+            {
+              name: 'Description',
+              type: 'textarea'
+            }
+          ]
         },
         {
           name: 'Intérêts',
-          type: 'text'
+          type: 'collection',
+          max: 3,
+          fields: [
+            {
+              name: 'Intitulé',
+              type: 'text'
+            },
+            {
+              name: 'Description',
+              type: 'textarea'
+            }
+          ]
         },
         {
           name: 'Pied de page',

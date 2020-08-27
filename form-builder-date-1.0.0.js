@@ -3,7 +3,7 @@
   var options = {
     autoClose: true,
     firstDay: 1,
-    format: 'dd/mm/yyyy'
+    format: 'yyyy/mm/dd'
   }
   M.Datepicker.init(elems, options);
 })();
