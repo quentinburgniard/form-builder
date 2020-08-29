@@ -22,11 +22,11 @@
       case 'collection':
         htmlWrapper.id = fieldID;
         htmlWrapper.className = '';
-        htmlWrapper.style.margin = '15px 0 15px 0 15px';
         for (i = 0; i < max; i++) {
           var htmlCollection = document.createElement('div');
           htmlCollection.className = 'form-builder-collection';
-          htmlCollection.style.margin = '15px 0 15px 0 15px';
+          htmlCollection.style.paddingTop = '5px';
+          htmlCollection.style.paddingBottom = '5px'
           fields.forEach(function (collectionField) {
             var newCollectionField = {};
             newCollectionField.id = fieldID + '-' + i + '-' + getID(collectionField.name);

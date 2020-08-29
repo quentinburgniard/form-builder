@@ -1,6 +1,5 @@
 (function () {
   var displayCollection = function (button) {
-    event.preventDefault();
     button.style.display = 'none';
     button.closest('.form-builder-collection').querySelectorAll('.input-field').forEach(function (field) {
       field.style.display = 'block';
@@ -17,7 +16,7 @@
       collection.querySelectorAll('.input-field').forEach(function (field) {
         field.style.display = 'none';
       });
-      collection.innerHTML += '<button class="btn-floating" onclick="formBuilder.displayCollection(this)"><i class="material-icons">add</i></a>';
+      collection.innerHTML += '<a class="btn-floating" onclick="formBuilder.displayCollection(this)"><i class="material-icons">add</i></a>';
     }
   });
 })();

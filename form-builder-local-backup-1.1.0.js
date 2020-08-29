@@ -12,6 +12,7 @@
     fields = formBuilder.getFields();
     localStorage.setItem('form-builder-' + formName, JSON.stringify(fields));
   }
+  formBuilder.localBackup.save = save;
 
   var getValue = function (id) {
     var IDs = id.split('-');
