@@ -152,7 +152,7 @@
   var getID = function (fieldName) {
     var id = fieldName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     id = id.toLowerCase();
-    id = id.replace(/\s*/g, '');
+    id = id.replace(/\W*/g, '');
     return id;
   }
 
