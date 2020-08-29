@@ -1,7 +1,7 @@
 (function () {
   var dom = {};
   var formBuilder = window.formBuilder || {};
-  formBuilder.version = '1.0.0';
+  formBuilder.version = '1.1.0';
   formBuilder.debug = formBuilder.debug || false;
 
   var getField = function (field) {
@@ -21,9 +21,12 @@
     switch (fieldType) {
       case 'collection':
         htmlWrapper.id = fieldID;
+        htmlWrapper.className = '';
+        htmlWrapper.style.margin = '15px 0 15px 0 15px';
         for (i = 0; i < max; i++) {
           var htmlCollection = document.createElement('div');
-          htmlCollection.className = 'form-builder-collection input-field';
+          htmlCollection.className = 'form-builder-collection';
+          htmlCollection.style.margin = '15px 0 15px 0 15px';
           fields.forEach(function (collectionField) {
             var newCollectionField = {};
             newCollectionField.id = fieldID + '-' + i + '-' + getID(collectionField.name);
@@ -116,7 +119,7 @@
       log('Load dynamically ' + plugin);
       var script = document.createElement('script');
       script.async = true;
-      script.src = prefix + plugin + '-' + formBuilder.version + '.js';
+      script.src = prefix + plugin + '-' + formBuilder.version + '.js';    
       document.head.appendChild(script);
     });
   }
@@ -135,7 +138,7 @@
       ul.appendChild(getField(field));
     });
     dom.form.appendChild(ul);
-    dom.fields = dom.form.querySelectorAll('.form-builder-fields');
+    dom.fields = dom.form.querySelectorAll('.form-builder-fields');;
 
     dynamicLoading();
 
@@ -181,7 +184,7 @@
         field.value = fields[IDs[0]] || '';
       }
       if (IDs.length == 3) {
-        if (fields[IDs[0]][IDs[1]]) {
+        if (fields[IDs[0]] && fields[IDs[0]][IDs[1]]) {
           field.value = fields[IDs[0]][IDs[1]][IDs[2]] || '';
         }
       }

@@ -1,5 +1,4 @@
 (function () {
-  var formBuilder = window.formBuilder || {};
   var displayCollection = function (button) {
     event.preventDefault();
     button.style.display = 'none';
