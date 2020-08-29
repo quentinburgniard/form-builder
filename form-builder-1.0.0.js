@@ -20,11 +20,10 @@
 
     switch (fieldType) {
       case 'collection':
-        htmlWrapper = document.createElement('div');
         htmlWrapper.id = fieldID;
         for (i = 0; i < max; i++) {
           var htmlCollection = document.createElement('div');
-          htmlCollection.className = 'form-builder-collection';
+          htmlCollection.className = 'form-builder-collection input-field';
           fields.forEach(function (collectionField) {
             var newCollectionField = {};
             newCollectionField.id = fieldID + '-' + i + '-' + getID(collectionField.name);
@@ -35,15 +34,15 @@
           htmlWrapper.appendChild(htmlCollection);
         }
         break;
+      case 'email':
+      case 'number':
+      case 'tel':
+      case 'url':
       case 'date':
         htmlField = document.createElement('input');
         htmlField.className = fieldType;
         htmlField.type = 'text';
         break;
-      case 'email':
-      case 'number':
-      case 'tel':
-      case 'url':
       case 'img':
         htmlField = document.createElement('input');
         htmlField.className = 'form-builder-image';
@@ -65,6 +64,17 @@
         dom.form.appendChild(htmlHiddenField);
         break;
       case 'pagination':
+        htmlWrapper = document.createElement('li');
+        htmlLabel = document.createElement('div');
+        htmlLabel.className = 'collapsible-header form-builder-pagination';
+        htmlLabel.innerText = fieldName;
+        htmlField = document.createElement('div');
+        htmlField.className = 'collapsible-body';
+        fields.forEach(function (paginationField) {
+          htmlField.appendChild(getField(paginationField));
+        });
+        htmlWrapper.appendChild(htmlLabel);
+        htmlWrapper.appendChild(htmlField);
         break;
       case 'select':
         htmlField = document.createElement('select');
@@ -75,6 +85,7 @@
           option.innerText = optionName;
           htmlField.appendChild(option);
         });
+        break;
       case 'text':
         htmlField = document.createElement('input');
         htmlField.type = fieldType;
@@ -115,11 +126,15 @@
 
     dom.form = document.querySelector('#form-builder');
     dom.form.innerHTML = '';
+    var ul = document.createElement('ul');
+    ul.className = 'collapsible z-depth-0';
+    ul.style.border = '0';
     var fields = formBuilder.config.fields || [];
-    fields.forEach(function (field) {
-      dom.form.appendChild(getField(field));
+    fields.forEach(function (field, index) {
+      field.index = index;
+      ul.appendChild(getField(field));
     });
-
+    dom.form.appendChild(ul);
     dom.fields = dom.form.querySelectorAll('.form-builder-fields');
 
     dynamicLoading();
@@ -144,14 +159,16 @@
   var getFields = function () {
     var fields = {};
     dom.fields.forEach(function (field) {
-      var IDs = field.id.split('-');
-      if (IDs.length == 1) {
-        fields[IDs[0]] = field.value;
-      }
-      if (IDs.length == 3) {
-        fields[IDs[0]] = fields[IDs[0]] || [];
-        fields[IDs[0]][IDs[1]] = fields[IDs[0]][IDs[1]] || {};
-        fields[IDs[0]][IDs[1]][IDs[2]] = field.value;
+      if (field.value) {
+        var IDs = field.id.split('-');
+        if (IDs.length == 1) {
+          fields[IDs[0]] = field.value;
+        }
+        if (IDs.length == 3) {
+          fields[IDs[0]] = fields[IDs[0]] || [];
+          fields[IDs[0]][IDs[1]] = fields[IDs[0]][IDs[1]] || {};
+          fields[IDs[0]][IDs[1]][IDs[2]] = field.value;
+        }
       }
     });
     return fields;
@@ -164,7 +181,9 @@
         field.value = fields[IDs[0]] || '';
       }
       if (IDs.length == 3) {
-        field.value = fields[IDs[0]][IDs[1]][IDs[2]] || '';
+        if (fields[IDs[0]][IDs[1]]) {
+          field.value = fields[IDs[0]][IDs[1]][IDs[2]] || '';
+        }
       }
     });
   }

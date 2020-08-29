@@ -11,6 +11,7 @@
   <!-- Load Form Builder -->
   <script defer src="../form-builder-1.0.0.js"></script>
   <!-- Optional: Add PWA manifest for online backup -->
+  <title>Form Builder</title>
   <link rel="manifest" href="manifest.json">
 </head>
 
@@ -26,150 +27,161 @@
       },
       plugins: [
         'date',
-        'image',
-        'local-backup'
+        'img',
+        'local-backup',
+        'collection'
       ],
       fields: [
         {
           name: 'Identité',
-          type: 'pagination'
-        },
-        {
-          name: 'Prénom',
-          type: 'text'
-        },
-        {
-          name: 'Nom',
-          type: 'text'
-        },
-        {
-          name: 'Date de naissance',
-          type: 'date'
-        },
-        {
-          name: 'Adresse',
-          type: 'textarea'
-        },
-        {
-          name: 'Email',
-          type: 'email'
-        },
-        {
-          name: 'Téléphone',
-          type: 'tel'
-        },
-        {
-          name: 'Site internet',
-          type: 'url'
-        },
-        {
-          name: 'Image',
-          type: 'img'
-        },
-        {
-          name: 'Intitulé du poste',
-          type: 'text'
-        },
-        {
-          name: 'Expériences',
-          type: 'pagination'
-        },
-        {
-          name: 'Expériences',
-          type: 'collection',
-          max: 3,
+          type: 'pagination',
           fields: [
             {
-              name: 'Intitulé',
+              name: 'Prénom',
               type: 'text'
             },
             {
-              name: 'Date',
+              name: 'Nom',
               type: 'text'
             },
             {
-              name: 'Description',
+              name: 'Date de naissance',
+              type: 'date'
+            },
+            {
+              name: 'Adresse',
               type: 'textarea'
+            },
+            {
+              name: 'Email',
+              type: 'email'
+            },
+            {
+              name: 'Téléphone',
+              type: 'tel'
+            },
+            {
+              name: 'Site internet',
+              type: 'url'
+            },
+            {
+              name: 'Image',
+              type: 'img'
+            },
+            {
+              name: 'Intitulé du poste',
+              type: 'text'
+            }
+          ]
+        },
+        {
+          name: 'Expériences',
+          type: 'pagination',
+          fields: [
+            {
+              name: 'Expériences',
+              type: 'collection',
+              max: 3,
+              fields: [
+                {
+                  name: 'Intitulé',
+                  type: 'text'
+                },
+                {
+                  name: 'Date',
+                  type: 'text'
+                },
+                {
+                  name: 'Description',
+                  type: 'textarea'
+                }
+              ]
             }
           ]
         },
         {
           name: 'Formations',
-          type: 'pagination'
-        },
-        {
-          name: 'Formations',
-          type: 'collection',
-          max: 3,
+          type: 'pagination',
           fields: [
             {
-              name: 'Intitulé',
-              type: 'text'
-            },
-            {
-              name: 'Date',
-              type: 'text'
-            },
-            {
-              name: 'Description',
-              type: 'textarea'
+              name: 'Formations',
+              type: 'collection',
+              max: 3,
+              fields: [
+                {
+                  name: 'Intitulé',
+                  type: 'text'
+                },
+                {
+                  name: 'Date',
+                  type: 'text'
+                },
+                {
+                  name: 'Description',
+                  type: 'textarea'
+                }
+              ]
             }
           ]
         },
         {
           name: 'Divers',
-          type: 'pagination'
-        },
-        {
-          name: 'Divers',
-          type: 'collection',
-          max: 3,
+          type: 'pagination',
           fields: [
             {
-              name: 'Intitulé',
-              type: 'text'
-            },
-            {
-              name: 'Date',
-              type: 'text'
-            },
-            {
-              name: 'Description',
-              type: 'textarea'
+              name: 'Divers',
+              type: 'collection',
+              max: 3,
+              fields: [
+                {
+                  name: 'Intitulé',
+                  type: 'text'
+                },
+                {
+                  name: 'Date',
+                  type: 'text'
+                },
+                {
+                  name: 'Description',
+                  type: 'textarea'
+                }
+              ]
             }
           ]
         },
         {
           name: 'Compétences & Intérêts',
-          type: 'pagination'
-        },
-        {
-          name: 'Compétences',
-          type: 'collection',
-          max: 3,
+          type: 'pagination',
           fields: [
             {
-              name: 'Intitulé',
-              type: 'text'
+              name: 'Compétences',
+              type: 'collection',
+              max: 3,
+              fields: [
+                {
+                  name: 'Intitulé',
+                  type: 'text'
+                },
+                {
+                  name: 'Description',
+                  type: 'textarea'
+                }
+              ]
             },
             {
-              name: 'Description',
-              type: 'textarea'
-            }
-          ]
-        },
-        {
-          name: 'Intérêts',
-          type: 'collection',
-          max: 3,
-          fields: [
-            {
-              name: 'Intitulé',
-              type: 'text'
-            },
-            {
-              name: 'Description',
-              type: 'textarea'
+              name: 'Intérêts',
+              type: 'collection',
+              max: 3,
+              fields: [
+                {
+                  name: 'Intitulé',
+                  type: 'text'
+                },
+                {
+                  name: 'Description',
+                  type: 'textarea'
+                }
+              ]
             }
           ]
         },
@@ -184,9 +196,9 @@
             'Bleu',
             'Rouge'
           ]
-        },
+        }
       ]
-    }
+    };
   </script>
   <!-- Add your HTML -->
   <div class="container">
@@ -197,6 +209,7 @@
       </div>
     </div>
   </div>
+
   <!-- Optional: Add Form Builder preview window -->
   <div id="form-builder-preview" height="594px" width="420px"></div>
   <!-- Optional: Add Form Builder action button -->
