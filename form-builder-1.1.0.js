@@ -196,7 +196,7 @@
     form.action = dom.form.action;
     form.method = 'post';
     form.style.display = 'none';
-    form.innerHTML = '<input name="fields" value="' + JSON.stringify(getFields()) + '"';
+    form.innerHTML = "<input name='fields' type='text' value='" + JSON.stringify(getFields()) + "'>";
     document.body.appendChild(form);
     form.submit();
   }
