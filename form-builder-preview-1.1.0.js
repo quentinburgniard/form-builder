@@ -5,11 +5,20 @@
   preview.style.position = 'fixed';
   preview.style.right = '20px';
   preview.style.top = '20px';
+  preview.style.zIndex = '2';
   var iframe = document.createElement('iframe');
-  iframe.height = preview.getAttribute('height');
+  var resize = function () {
+    var width = window.innerWidth / 3;
+    var ratio = width / parseFloat(preview.getAttribute('width'));
+    var height = parseFloat(preview.getAttribute('height'));
+    height = height * ratio;
+    iframe.height = height;
+    iframe.width = width;
+  }
   iframe.name = 'form-builder-preview';
   iframe.style.border = 'none';
-  iframe.width = preview.getAttribute('width');
+  resize();
+
   preview.appendChild(iframe);
 
   var form  = document.createElement('form');
@@ -30,4 +39,5 @@
   }
 
   formBuilder.dom.fields.forEach(field => field.addEventListener('change', refresh));
+  //window.addEventListener('resize', resize);
 })();
