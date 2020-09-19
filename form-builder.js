@@ -119,7 +119,7 @@
       log('Load dynamically ' + plugin);
       var script = document.createElement('script');
       script.async = true;
-      script.src = prefix + plugin + '-' + formBuilder.version + '.js';    
+      script.src = prefix + plugin + '.js';    
       document.head.appendChild(script);
     });
   }
