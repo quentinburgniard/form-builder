@@ -1,6 +1,5 @@
 (function () {
   var preview = document.querySelector('#form-builder-preview');
-  preview.classList.add('card', 'hide-on-med-and-down');
   preview.style.lineHeight = '0';
   preview.style.overflow = 'hidden';
   preview.style.position = 'fixed';

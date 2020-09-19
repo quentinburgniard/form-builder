@@ -110,7 +110,7 @@
   }
 
   var dynamicLoading = function () {
-    var prefix = 'form-builder-';
+    var prefix = 'https://form-builder.digitalleman.com/form-builder-';
     var plugins = formBuilder.config.plugins || [];
     if (document.querySelector('#form-builder-action')) plugins.push('action');
     //if (!localStorage.getItem('form-builder-discovery')) plugins.push('discovery');
