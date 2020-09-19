@@ -15,7 +15,6 @@
     iframe.height = height;
     iframe.width = width;
     iframe.style.transform = 'scale(' + ratio + ')';
-    
   }
   iframe.name = 'form-builder-preview';
   iframe.style.border = 'none';
