@@ -22,7 +22,7 @@
   preview.appendChild(iframe);
 
   var form  = document.createElement('form');
-  form.action = formBuilder.dom.form.action + '';
+  form.action = formBuilder.dom.form.action + '#toolbar=0';
   form.method = 'post';
   form.target = 'form-builder-preview';
   var field = document.createElement('input');
