@@ -44,7 +44,7 @@
       case 'date':
         htmlField = document.createElement('input');
         htmlField.className = fieldType;
-        htmlField.type = fieldType;
+        htmlField.type = 'text';
         break;
       case 'img':
         htmlField = document.createElement('input');
