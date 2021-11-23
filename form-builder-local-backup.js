@@ -33,6 +33,9 @@
 
   if (fields) formBuilder.setFields(fields);
   M.updateTextFields();
+  document.querySelectorAll('textarea.form-builder-fields').forEach(function (field) {
+    M.textareaAutoResize(field);
+  });
   formBuilder.dom.form.addEventListener('submit', save);
   formBuilder.dom.fields.forEach(field => field.addEventListener('change', save));
 })();
